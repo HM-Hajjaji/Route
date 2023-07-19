@@ -1,0 +1,22 @@
+{
+    "name": "hm-hajjaji/route",
+    "description": "system route of php",
+    "type": "library",
+    "require": {
+        "php": ">= 8.0",
+        "symfony/http-foundation": "^6.3"
+    },
+    "license": "HMZ",
+    "autoload": {
+        "psr-4": {
+            "Route\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "HM-Hajjaji",
+            "email": "hhajjaji.fsd@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev"
+}
