@@ -2,6 +2,7 @@
     "name": "hm-hajjaji/route",
     "description": "The route component defines the system route based on the php attribute",
     "type": "library",
+    "license" : "MIT",
     "require": {
         "php": ">= 8.0"
     },
@@ -15,6 +16,5 @@
             "name": "HM-Hajjaji",
             "email": "hhajjaji.fsd@gmail.com"
         }
-    ],
-    "minimum-stability": "dev"
+    ]
 }
