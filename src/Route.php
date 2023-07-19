@@ -1,5 +1,4 @@
 <?php
-
 namespace Route;
 #[\Attribute]
 final class Route
