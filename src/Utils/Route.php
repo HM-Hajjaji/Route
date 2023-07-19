@@ -33,6 +33,11 @@ trait Route
     {
         foreach ($this->handleReflections() as $reflection)
         {
+            $prefix ="";
+            if ($reflection->getAttributes())
+            {
+                $prefix .= $reflection->getAttributes()[0]->newInstance()->getPath();
+            }
             foreach ($reflection->getMethods() as $method)
             {
                 if (isset($method->getAttributes()[0]))
@@ -43,7 +48,7 @@ trait Route
                          * @var \Route\Route $route
                          */
                         $route = $method->getAttributes()[0]->newInstance();
-                        $this->handleListRoute($route->getName(),$route->getPath(),[$method->class,$method->name],$route->getMethods());
+                        $this->handleListRoute($route->getName(),$prefix.$route->getPath(),[$method->class,$method->name],$route->getMethods());
                     }
                 }
             }

@@ -1,6 +1,6 @@
 {
     "name": "hm-hajjaji/route",
-    "description": "system route of php",
+    "description": "The route component defines the system route based on the php attribute",
     "type": "library",
     "require": {
         "php": ">= 8.0"
