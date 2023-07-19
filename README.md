@@ -29,10 +29,10 @@ use Route\Route;
 
 class HomeController
 {
-    #[Route("app_home","/home")]
+    #[Route("/home","app_home")]
     public function index()
     {
-        echo "hello route home";
+        echo "welcome home";
     }
 }
 ```
@@ -45,3 +45,52 @@ php -S localhost:8000
 
 And finally go to url [http://localhost:8000/home](http://localhost:8000/home) .
 
+## Prefix
+
+Prefix action route in one controller
+
+```php
+<?php
+namespace App\Controller;
+use Route\Route;
+
+#[Route("/user")]
+class HomeController
+{
+    #[Route("/home","app_home")]
+    public function index()
+    {
+        echo "welcome home";
+    }
+    
+    #[Route("/show","app_show")]
+    public function show()
+    {
+        echo "welcome show";
+    }
+}
+```
+
+## Passing parameters
+
+You can pass multiple parameters for the routing
+
+```php
+<?php
+namespace App\Controller;
+use Route\Route;
+
+class HomeController
+{
+    #[Route("/home/{name}","app_home")]
+    public function index($name)
+    {
+        echo "welcome $name";
+    }
+}
+```
+Now to access to action do the following:<br>
+
+go to url [http://localhost:8000/home/name_value](http://localhost:8000/home/name_value) .<br>
+
+Output the : ```welcome name_value``` 
