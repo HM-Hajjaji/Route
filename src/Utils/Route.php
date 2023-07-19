@@ -37,7 +37,7 @@ trait Route
             {
                 if (isset($method->getAttributes()[0]))
                 {
-                    if ($method->getAttributes()[0]->getName() === Route::class)
+                    if ($method->getAttributes()[0]->getName() === \Route\Route::class)
                     {
                         /**
                          * @var \Route\Route $route
