@@ -30,7 +30,7 @@ use Route\Route;
 class HomeController
 {
     #[Route("app_home","/home")]
-    public function index($name)
+    public function index()
     {
         echo "hello route home";
     }
