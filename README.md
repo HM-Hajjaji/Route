@@ -4,11 +4,11 @@ The route component defines the system route based on the ```php attribute```
 ## Usage
 
 ### Step 1: Installation
-Install the package using composer.
+To install PHP Router, You can run the following command directly at your project path in your console:
 ```
 composer require hm-hajjaji/route
 ```
-### Step 2: Using
+### Step 2: Example Usage
 In your project's index.php file, create an instance of the ```HttpRoute``` class and pass the parameter ```controller_dir``` path to your project controllers
 ```php
 <?php
@@ -94,3 +94,10 @@ Now to access to action do the following:<br>
 go to url [http://localhost:8000/home/name_value](http://localhost:8000/home/name_value) .<br>
 
 Output the : ```welcome name_value``` 
+
+## Recuperate the path
+You can recuperate the ```path``` from the ```route name``` using the ````path function````:
+```html
+<a href="<?=HttpRoute::path("app_home",['name' => 'Home'])?>">Home</a>
+```
+The path will be: ````http://localhost:8000/home/Home```` .
