@@ -75,4 +75,40 @@ trait Route
         }
         return $routeMethod;
     }
+
+    /**
+     * @param string $name
+     * @param array $params
+     * @return string
+     * @throws \Exception
+     */
+    public function path(string $name, array $params = []):string
+    {
+        foreach (self::$routes as $method) {
+            /**
+             * @var \Route\Route $route
+             */
+            foreach ($method as $route) {
+                if ($route->getName() == $name) {
+                    $path = $route->getPath();
+                    foreach (explode("/", $path) as $segment) {
+                        if (preg_match('/\{(\w+)\}/', $segment, $match)) {
+                            if (!isset($params[$match[1]]))
+                            {
+                                throw new \Exception(message: "the function {$route->getAction()[0]}::{$route->getAction()[1]} has parameter \${$match[1]} requirement.");
+                            }
+                            $path = str_replace($match[0], $params[$match[1]], $path);
+                            unset($params[$match[1]]);
+                        }
+                    }
+                    if (!empty($params))
+                    {
+                        $path.='?'.http_build_query($params);
+                    }
+                    return $path;
+                }
+            }
+        }
+        throw new \Exception(message: "The path ($name) not fond.");
+    }
 }
