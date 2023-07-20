@@ -72,6 +72,8 @@ trait Route
         if ($routeController)
         {
             $routeMethod->setPath($routeController->getPath().$routeMethod->getPath());
+        }else{
+            $routeMethod->setPath($routeMethod->getPath());
         }
         return $routeMethod;
     }
