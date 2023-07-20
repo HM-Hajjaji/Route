@@ -82,7 +82,7 @@ trait Route
      * @return string
      * @throws \Exception
      */
-    public function path(string $name, array $params = []):string
+    public static function path(string $name, array $params = []):string
     {
         foreach (self::$routes as $method) {
             /**
