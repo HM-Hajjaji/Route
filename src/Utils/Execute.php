@@ -13,10 +13,10 @@ trait Execute
         $url = !str_ends_with($url,"/") ? $url."/":$url;
         foreach ($routes as $route)
         {
-            $params = $this->matchPath($route['url'],$url);
+            $params = $this->matchPath($route->getPath(),$url);
             if (is_array($params))
             {
-                $this->executeAction($route['action'],$params);
+                $this->executeAction($route->getAction(),$params);
                 return;
             }
         }

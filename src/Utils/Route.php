@@ -2,56 +2,77 @@
 
 namespace Route\Utils;
 
+use ReflectionMethod;
+
 trait Route
 {
     use Controller;
-
-    protected function handleListRoute(string $path, string $url, array|callable $action, string|array $method):void
-    {
-        $path = trim($path);
-        $url = trim($url);
-        $url = !str_ends_with($url,"/") ? $url."/":$url;
-        if (is_array($method))
-        {
-            if (isset($method[0]))
-            {
-                self::$routes[$method[0]][$path] = ['url' => trim($url),"action" => $action];
-            }
-            if (isset($method[1]))
-            {
-                self::$routes[$method[1]][$path] = ['url' => trim($url),"action" => $action];
-            }
-            return;
-        }
-        self::$routes[$method][$path] = ['url' => trim($url),"action" => $action];
-    }
 
     /**
      * @throws \ReflectionException
      */
     protected function handleRoute():void
     {
-        foreach ($this->handleReflections() as $reflection)
-        {
-            $prefix ="";
-            if ($reflection->getAttributes())
-            {
-                $prefix .= $reflection->getAttributes()[0]->newInstance()->getPath();
-            }
-            foreach ($reflection->getMethods() as $method)
-            {
-                if (isset($method->getAttributes()[0]))
-                {
-                    if ($method->getAttributes()[0]->getName() === \Route\Route::class)
-                    {
-                        /**
-                         * @var \Route\Route $route
-                         */
-                        $route = $method->getAttributes()[0]->newInstance();
-                        $this->handleListRoute($route->getName(),$prefix.$route->getPath(),[$method->class,$method->name],$route->getMethods());
-                    }
+        foreach ($this->handleReflections() as $reflection) {
+            $routeController = null;
+            foreach ($reflection->getAttributes() as $attribute) {
+                if ($attribute->getName() === \Route\Route::class) {
+                    $routeController = $attribute->newInstance();
                 }
             }
+
+            /**
+             * @var ReflectionMethod $method
+             */
+            foreach ($reflection->getMethods() as $method) {
+                /**
+                 * @var \Route\Route $routeMethod
+                 */
+                $routeMethod = null;
+                foreach ($method->getAttributes() as $attr) {
+                    if ($attr->getName() === \Route\Route::class) {
+                        $routeMethod = $attr->newInstance();
+                        $routeMethod->setAction([$method->class, $method->name]);
+                    }
+                }
+
+                if (!$routeMethod) {
+                    continue;
+                }
+
+                //is the function not public display exception.
+                if ($method->getModifiers() != ReflectionMethod::IS_PUBLIC) {
+                    throw new \ReflectionException("The modifier of {$method->class}::{$method->getName()} not access in system route");
+                }
+
+                $this->handleListRoute($this->prefix($routeController, $routeMethod));
+            }
         }
+    }
+
+    protected function handleListRoute(\Route\Route $route):void
+    {
+        if (is_array($route->getMethods()))
+        {
+            if (isset($route->getMethods()[0]))
+            {
+                self::$routes[$route->getMethods()[0]][] = $route;
+            }
+            if (isset($route->getMethods()[1]))
+            {
+                self::$routes[$route->getMethods()[1]][] = $route;
+            }
+            return;
+        }
+        self::$routes[$route->getMethods()][] = $route;
+    }
+
+    private function prefix(?\Route\Route $routeController, \Route\Route $routeMethod): \Route\Route
+    {
+        if ($routeController)
+        {
+            $routeMethod->setPath($routeController->getPath().$routeMethod->getPath());
+        }
+        return $routeMethod;
     }
 }

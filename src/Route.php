@@ -6,16 +6,17 @@ final class Route
     private string $path;
     private string $name;
     private string|array $methods;
+    private array $action;
 
     /**
      * @param string $name
      * @param string $path
      * @param string|array $methods
      */
-    public function __construct(string $path,string $name ="", string|array $methods="GET")
+    public function __construct(string $path,string $name="", string|array $methods="GET")
     {
-        $this->path = $path;
         $this->name = $name;
+        $this->path = $path;
         $this->methods = $methods;
     }
 
@@ -25,6 +26,14 @@ final class Route
     public function getName(): string
     {
         return $this->name;
+    }
+
+    /**
+     * @param string $path
+     */
+    public function setPath(string $path): void
+    {
+        $this->path = !str_ends_with($path,"/") ? $path."/":$path;
     }
 
     /**
@@ -41,5 +50,21 @@ final class Route
     public function getMethods(): array|string
     {
         return $this->methods;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAction(): array
+    {
+        return $this->action;
+    }
+
+    /**
+     * @param array $action
+     */
+    public function setAction(array $action): void
+    {
+        $this->action = $action;
     }
 }
