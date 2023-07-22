@@ -8,6 +8,11 @@ trait Controller
 {
     protected function handleControllers(string $path):array
     {
+        if (!is_dir($path))
+        {
+            throw new \Exception("Not fond $path");
+        }
+
         $controllers = [];
         $files = scandir($path);
         foreach ($files as $file) {
