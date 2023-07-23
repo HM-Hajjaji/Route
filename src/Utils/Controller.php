@@ -6,6 +6,9 @@ use ReflectionClass;
 
 trait Controller
 {
+    /**
+     * @throws \Exception
+     */
     protected function handleControllers(string $path):array
     {
         if (!is_dir($path))
